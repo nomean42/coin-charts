@@ -1,7 +1,7 @@
 import { defaultConfig } from '@web3modal/ethers/react';
 import mainConfig from './config';
 
-const {walletConnect: {projectId, url, icons}} = mainConfig;
+const {walletConnect: {projectId, url}} = mainConfig;
 
 const mainnet = {
 	chainId: 1,
@@ -15,7 +15,7 @@ const metadata = {
 	name: 'Coins chart',
 	description: 'Coin explorer and history charts',
 	url,
-	icons
+	icons: ['https://avatars.mywebsite.com/']
 };
 
 const ethersConfig = defaultConfig({

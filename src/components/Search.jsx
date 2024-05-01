@@ -21,7 +21,7 @@ export default function Search() {
 				setList(data);
 			})
 			.catch((error) => {/*TODO*/ alert(error.message);});
-	},[])
+	}, [coinGecko.apiKey]);
 
 	const [filteredList, setFilteredList] = useState([]);
 	const [selected, setSelected] = useState(null);
