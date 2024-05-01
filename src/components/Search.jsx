@@ -1,7 +1,6 @@
-import {List, ListItem, TextField} from '@material-ui/core';
+import {List, ListItem, TextField, Box} from '@material-ui/core';
 import {useCallback, useEffect, useState} from 'react';
 import mainConfig from '../config';
-import {Box} from '@mui/material';
 
 
 export default function Search() {
