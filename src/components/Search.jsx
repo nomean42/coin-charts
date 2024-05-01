@@ -81,6 +81,27 @@ export default function Search() {
 		}
 	}, [coinGecko.apiKey, selected]);
 
+	const [contract, setContract] = useState({});
+	useEffect(() => {
+		if (selected) {
+			fetch(`https://api.coingecko.com/api/v3/coins/${selected.id}`, {
+				method: 'GET',
+				headers: {
+					'accept': 'application/json',
+					'x-cg-demo-api-key': `${coinGecko.apiKey}`,
+				},
+			})
+				.then((response) => response.json())
+				.then((rawData) => {
+					const contract = rawData.platforms.ethereum
+					const symbol = rawData.symbol
+
+					setContract({contract, symbol})
+				})
+				.catch((error) => {/*TODO*/ alert(error.message);});
+		}
+	}, [coinGecko.apiKey, selected]);
+
 	return (
 		<Box sx={{display: 'flex', flexDirection: 'column'}}>
 			<TextField
@@ -98,7 +119,7 @@ export default function Search() {
 				</List>
 			}
 			{
-				!!selected && !!chartData && <Chart chartData={chartData} name={selected.name}/>
+				!!selected && !!chartData && <Chart chartData={chartData} name={selected.name} contract={contract}/>
 			}
 		</Box>
 	);

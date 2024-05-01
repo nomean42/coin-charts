@@ -4,14 +4,11 @@ import mainCinfig from '../config';
 import {useContext, useEffect, useState} from "react";
 import {WalletContext} from "../WalletContext";
 
-
-
 export default function Balance() {
     const ethersConfig = mainCinfig.ethers;
     const provider = ethers.getDefaultProvider('homestead', ethersConfig);
     const [balance, setBalance] = useState('0');
     const { walletAddress } = useContext(WalletContext);
-
 
     useEffect(() => {
         async function fetchBalance() {

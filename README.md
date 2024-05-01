@@ -12,6 +12,7 @@ Change .env or src/config.mjs
 
 for [WalletConnect](https://docs.walletconnect.com/advanced/providers/universal):
 WALLET_CONNECT_PROJECT_ID / walletConnect.projectId
+
 WALLET_CONNECT_PROJECT_URL / walletConnect.url
 
 for [Infura](https://docs.infura.io/api)
