@@ -1,6 +1,28 @@
 import {List, ListItem, TextField, Box} from '@material-ui/core';
 import {useCallback, useEffect, useState} from 'react';
+import Chart from './Chart';
 import mainConfig from '../config';
+
+const preProcessChartData = (rawData, name) => {
+	const labels = [];
+	const data = [];
+
+	rawData.forEach(([date, price]) => {
+		labels.push(date);
+		data.push(price);
+	})
+
+	return {
+		labels,
+		datasets: [
+			{
+				label: `${name} price history`,
+				data,
+				borderColor: '#106774'
+			}
+		]
+	}
+}
 
 
 export default function Search() {
@@ -40,6 +62,25 @@ export default function Search() {
 		setSelected(filteredList.find(({id}) => id === event.target.id));
 	}, [filteredList]);
 
+	const [chartData, setChartData] = useState(null);
+	useEffect(() => {
+		if (selected) {
+			fetch(`https://api.coingecko.com/api/v3/coins/${selected.id}/market_chart?vs_currency=usd&days=30`, {
+				method: 'GET',
+				headers: {
+					'accept': 'application/json',
+					'x-cg-demo-api-key': `${coinGecko.apiKey}`,
+				},
+			})
+				.then((response) => response.json())
+				.then((rawData) => {
+					const preprocessedData = preProcessChartData(rawData.prices, selected.name);
+					setChartData(preprocessedData);
+				})
+				.catch((error) => {/*TODO*/ alert(error.message);});
+		}
+	}, [coinGecko.apiKey, selected]);
+
 	return (
 		<Box sx={{display: 'flex', flexDirection: 'column'}}>
 			<TextField
@@ -52,12 +93,12 @@ export default function Search() {
 			{!selected &&
 				<List>
 					{filteredList.map(({id, symbol, name}) => {
-						return <ListItem onClick={onItemClick} button id={id}>{`${symbol}/${name}`}</ListItem>
+						return <ListItem onClick={onItemClick} button key={id} id={id}>{`${symbol}/${name}`}</ListItem>
 					})}
 				</List>
 			}
 			{
-				!!selected && <Box>{selected.id}</Box>
+				!!selected && !!chartData && <Chart chartData={chartData} name={selected.name}/>
 			}
 		</Box>
 	);
